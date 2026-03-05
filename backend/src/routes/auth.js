@@ -25,14 +25,14 @@ router.post(
     const { email, password, firstName, lastName, phone, role } = req.body;
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
       throw new ConflictError('User with this email already exists');
     }
 
     // Create new user
     const user = new User({
-      email,
+      email: email.toLowerCase(),
       password,
       firstName,
       lastName,
@@ -79,7 +79,7 @@ router.post(
     const { email, password } = req.body;
 
     // Find user by email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
       throw new AuthenticationError('Invalid email or password');
     }

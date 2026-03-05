@@ -77,12 +77,18 @@ const logger = winston.createLogger({
   ],
   // Handle exceptions
   exceptionHandlers: [
+    new winston.transports.Console({
+      format: consoleFormat,
+    }),
     new winston.transports.File({
       filename: path.join(logsDir, 'exceptions.log'),
     }),
   ],
   // Handle rejections
   rejectionHandlers: [
+    new winston.transports.Console({
+      format: consoleFormat,
+    }),
     new winston.transports.File({
       filename: path.join(logsDir, 'rejections.log'),
     }),

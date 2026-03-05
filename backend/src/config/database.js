@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const logger = require('./logger');
-const { MongoMemoryServer } = require('mongodb-memory-server');
+// const { MongoMemoryServer } = require('mongodb-memory-server'); // Loaded dynamically
 
 let mongoServer;
 
@@ -10,13 +10,7 @@ const connectDB = async () => {
 
     if (!uri || process.env.USE_IN_MEMORY_DB === 'true') {
       logger.info('Starting in-memory MongoDB server...');
-      mongoServer = await MongoMemoryServer.create();
-      uri = mongoServer.getUri();
-      logger.info(`In-memory MongoDB URI: ${uri}`);
-    } else if (!uri) {
-      // Default fallback if neither env var is set properly, though unlikely with correct setup
-      logger.warn('MONGODB_URI not set. Falling back to in-memory database.');
-      logger.info('Starting in-memory MongoDB server...');
+      const { MongoMemoryServer } = require('mongodb-memory-server');
       mongoServer = await MongoMemoryServer.create();
       uri = mongoServer.getUri();
       logger.info(`In-memory MongoDB URI: ${uri}`);

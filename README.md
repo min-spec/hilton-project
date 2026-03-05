@@ -124,15 +124,24 @@ chmod +x scripts/deploy.sh
 ### 选项 2: 本地开发
 
 ```bash
-# 1. 后端设置
+# 1. 启动数据库 (MongoDB & Redis)
+docker-compose up -d mongodb redis
+
+# 2. 运行密码重置脚本 (确保测试账号可用)
+cd scripts
+npm install
+node reset-passwords.js
+cd ..
+
+# 3. 后端设置
 cd backend
 npm install
 cp .env.example .env
 npm run dev
 
-# 2. 前端设置
+# 4. 前端设置
 cd ../frontend
-npm install
+npm install --legacy-peer-deps
 cp .env.example .env
 npm run dev
 ```

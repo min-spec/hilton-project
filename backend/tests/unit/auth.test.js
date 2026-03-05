@@ -24,6 +24,7 @@ describe('Authentication API Tests', () => {
 
     // Initialize GraphQL server manually for testing
     await server.initializeGraphQL();
+    server.initializeErrorHandling();
 
     // Create test user
     testUser = await User.create({
@@ -88,7 +89,7 @@ describe('Authentication API Tests', () => {
         .post('/api/auth/register')
         .send(userData)
         .expect('Content-Type', /json/)
-        .expect(400);
+        .expect(409);
     });
 
     it('should fail to register with invalid email', async () => {

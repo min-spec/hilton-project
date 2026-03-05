@@ -205,7 +205,7 @@ const asyncHandler = (fn) => (req, res, next) => {
  */
 const formatGraphQLError = (error) => {
   const originalError = error.originalError;
-  const isDevelopment = process.env.NODE_ENV === 'development';
+  const isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
 
   // Log the error
   const errorContext = {

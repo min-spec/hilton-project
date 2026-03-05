@@ -5,6 +5,7 @@ const { app, server } = require('../../src/server');
 // const mongoose = require('mongoose'); // Already declared
 const User = require('../../src/models/User');
 const Reservation = require('../../src/models/Reservation');
+const { generateToken } = require('../../src/middleware/auth');
 
 let mongoServer;
 let guestUser, employeeUser, adminUser;
@@ -26,6 +27,7 @@ describe('Reservation API Tests', () => {
 
     // Initialize GraphQL server manually for testing
     await server.initializeGraphQL();
+    server.initializeErrorHandling();
 
     // Create test users with different roles
     guestUser = await User.create({
@@ -35,7 +37,7 @@ describe('Reservation API Tests', () => {
       lastName: 'User',
       role: 'guest',
     });
-    guestToken = guestUser.getSignedJwtToken();
+    guestToken = generateToken(guestUser);
 
     employeeUser = await User.create({
       email: 'employee@example.com',
@@ -44,7 +46,7 @@ describe('Reservation API Tests', () => {
       lastName: 'User',
       role: 'employee',
     });
-    employeeToken = employeeUser.getSignedJwtToken();
+    employeeToken = generateToken(employeeUser);
 
     adminUser = await User.create({
       email: 'admin@example.com',
@@ -53,7 +55,7 @@ describe('Reservation API Tests', () => {
       lastName: 'User',
       role: 'admin',
     });
-    adminToken = adminUser.getSignedJwtToken();
+    adminToken = generateToken(adminUser);
   });
 
   afterAll(async () => {
